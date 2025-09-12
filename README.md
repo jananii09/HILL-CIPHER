@@ -29,7 +29,31 @@ STEP-4: Multiply the two matrices to obtain the cipher text of length three.
 STEP-5: Combine all these groups to get the complete cipher text.
 
 ## PROGRAM 
-
+```
+import numpy as np
+text = input("Enter the plaintext message: ")
+key_string = input("Enter the key matrix (space-separated values, row-wise): ")
+key_values = list(map(int, key_string.strip().split()))
+size = int(len(key_values) ** 0.5)
+key_matrix = np.array(key_values).reshape(size, size)
+if len(text) % size != 0:
+    text += 'X' * (size - (len(text) % size))
+text = text.upper().replace(" ", "")
+text_matrix = []
+for i in range(0, len(text), size):
+    row = [ord(c) - ord('A') for c in text[i:i+size]]
+    text_matrix.append(row)
+text_matrix = np.array(text_matrix)
+result_matrix = np.dot(text_matrix, key_matrix)
+result_matrix = np.mod(result_matrix, 26)
+cipher_text = ""
+for row in result_matrix:
+    for val in row:
+        cipher_text += chr(val + ord('A'))
+print("Encrypted message:", cipher_text)
+```
 ## OUTPUT
+<img width="776" height="261" alt="Screenshot 2025-09-12 084915" src="https://github.com/user-attachments/assets/dfb716cc-8d33-4a8f-8a2b-d7bac51a6301" />
 
 ## RESULT
+Thus,hill cipher has been successfully implemented.
